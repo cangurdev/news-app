@@ -90,7 +90,7 @@ class _HomeBodyState extends State<HomeBody> {
               itemBuilder: (context, index) {
                 final item = _feed.items[index];
                 return ListTile(
-                  trailing: Icon(Icons.keyboard_arrow_left),
+                  trailing: Icon(Icons.keyboard_arrow_right_rounded),
                   contentPadding: EdgeInsets.all(5),
                   onTap: () {
                     openWebView(item.link);

@@ -26,8 +26,14 @@ class Settings extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text("Geliştirici Hakkında"),
+            Text("Can Gür"),
             Text("Versiyon"),
+            Text("1.0.0"),
             RaisedButton(
+              color: Colors.blue,
+              textColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0)),
               onPressed: () async {
                 try {
                   await context.read<AuthService>().signOut();

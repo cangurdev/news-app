@@ -11,7 +11,7 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.limeAccent,
+      backgroundColor: Colors.teal,
       body: SafeArea(
         child: Center(
           child: Column(
@@ -28,29 +28,44 @@ class Login extends StatelessWidget {
               ),
               InputField(
                 prefixIcon: Icon(Icons.lock_outline),
-                labelText: "Password",
+                labelText: "Parola",
                 obscure: true,
                 textEditingController: passwordController,
               ),
-              InkWell(
-                child: Text('Not Have An Account?'),
-                onTap: () {
-                  Navigator.of(context).pushNamed('/register');
-                },
-              ),
-              RaisedButton(
-                onPressed: () async {
-                  try {
-                    await context.read<AuthService>().login(
-                          email: emailController.text.trim(),
-                          password: passwordController.text.trim(),
-                        );
-                    Navigator.of(context).pushReplacementNamed('/home');
-                  } catch (e) {
-                    print(e.message);
-                  }
-                },
-                child: Text("Login"),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(
+                      child: Text(
+                        'Hesabın Yok Mu?',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onTap: () {
+                        Navigator.of(context).pushNamed('/register');
+                      },
+                    ),
+                    RaisedButton(
+                      color: Colors.blue,
+                      textColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0)),
+                      onPressed: () async {
+                        try {
+                          await context.read<AuthService>().login(
+                                email: emailController.text.trim(),
+                                password: passwordController.text.trim(),
+                              );
+                          Navigator.of(context).pushReplacementNamed('/home');
+                        } catch (e) {
+                          print(e.message);
+                        }
+                      },
+                      child: Text("Giriş Yap"),
+                    )
+                  ],
+                ),
               )
             ],
           ),

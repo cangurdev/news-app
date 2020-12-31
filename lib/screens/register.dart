@@ -11,7 +11,7 @@ class Register extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.limeAccent,
+      backgroundColor: Colors.teal,
       body: SafeArea(
         child: Center(
           child: Column(
@@ -32,24 +32,39 @@ class Register extends StatelessWidget {
                 obscure: true,
                 textEditingController: passwordController,
               ),
-              InkWell(
-                  child: Text('Already Have An Account?'),
-                  onTap: () {
-                    Navigator.of(context).pushNamed('/login');
-                  }),
-              RaisedButton(
-                onPressed: () async {
-                  try {
-                    await context.read<AuthService>().signUp(
-                          email: emailController.text.trim(),
-                          password: passwordController.text.trim(),
-                        );
-                    Navigator.of(context).pushReplacementNamed('/home');
-                  } catch (e) {
-                    print(e.message);
-                  }
-                },
-                child: Text("Register"),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(
+                        child: Text(
+                          'Zaten Bir Hesabın Var Mı?',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onTap: () {
+                          Navigator.of(context).pushNamed('/login');
+                        }),
+                    RaisedButton(
+                      color: Colors.blue,
+                      textColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0)),
+                      onPressed: () async {
+                        try {
+                          await context.read<AuthService>().signUp(
+                                email: emailController.text.trim(),
+                                password: passwordController.text.trim(),
+                              );
+                          Navigator.of(context).pushReplacementNamed('/home');
+                        } catch (e) {
+                          print(e.message);
+                        }
+                      },
+                      child: Text("Register"),
+                    )
+                  ],
+                ),
               )
             ],
           ),
