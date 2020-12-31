@@ -32,7 +32,11 @@ class Register extends StatelessWidget {
                 obscure: true,
                 textEditingController: passwordController,
               ),
-              InkWell(child: Text('Already Have An Account?'), onTap: () {}),
+              InkWell(
+                  child: Text('Already Have An Account?'),
+                  onTap: () {
+                    Navigator.of(context).pushNamed('/login');
+                  }),
               RaisedButton(
                 onPressed: () async {
                   try {
@@ -40,7 +44,7 @@ class Register extends StatelessWidget {
                           email: emailController.text.trim(),
                           password: passwordController.text.trim(),
                         );
-                    Navigator.of(context).pushNamed('/home');
+                    Navigator.of(context).pushReplacementNamed('/home');
                   } catch (e) {
                     print(e.message);
                   }

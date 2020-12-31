@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/services/auth_service.dart';
 import 'package:news_app/widget/input_field.dart';
+import 'package:provider/provider.dart';
 
 class Login extends StatelessWidget {
   static String routeName = '/login';
@@ -37,8 +39,16 @@ class Login extends StatelessWidget {
                 },
               ),
               RaisedButton(
-                onPressed: () {
-                  print(emailController.text.trim());
+                onPressed: () async {
+                  try {
+                    await context.read<AuthService>().login(
+                          email: emailController.text.trim(),
+                          password: passwordController.text.trim(),
+                        );
+                    Navigator.of(context).pushReplacementNamed('/home');
+                  } catch (e) {
+                    print(e.message);
+                  }
                 },
                 child: Text("Login"),
               )
