@@ -51,23 +51,73 @@ class _HomeBodyState extends State<HomeBody> {
     return null;
   }
 
+  Future<void> openWebView(String url) async {
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        forceSafariVC: false,
+        forceWebView: true,
+      );
+      return;
+    }
+    updateTitle("Başaramadık");
+  }
+
+  isFeedEmpty() {
+    return null == _feed || _feed.items == null;
+  }
+
   @override
   void initState() {
     super.initState();
     updateTitle(widget.title);
     load();
+    _refreshKey = GlobalKey<RefreshIndicatorState>();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: _feed.items.length,
-      itemBuilder: (context, index) {
-        final item = _feed.items[index];
-        return ListTile(
-          title: Text(item.title),
-        );
-      },
-    );
+    return isFeedEmpty()
+        ? Center(
+            child: CircularProgressIndicator(),
+          )
+        : RefreshIndicator(
+            key: _refreshKey,
+            onRefresh: () => load(),
+            child: ListView.builder(
+              physics: BouncingScrollPhysics(),
+              itemCount: _feed.items.length,
+              itemBuilder: (context, index) {
+                final item = _feed.items[index];
+                return ListTile(
+                  trailing: Icon(Icons.keyboard_arrow_left),
+                  contentPadding: EdgeInsets.all(5),
+                  onTap: () {
+                    openWebView(item.link);
+                  },
+                  title: Text(
+                    item.title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  subtitle: Text(
+                    item.description,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  leading: Padding(
+                    padding: EdgeInsets.only(left: 15),
+                    child: CachedNetworkImage(
+                      imageUrl: item.enclosure.url,
+                      width: 70,
+                      height: 50,
+                      alignment: Alignment.center,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
   }
 }
