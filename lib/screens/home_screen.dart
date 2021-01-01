@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/screens/home_body.dart';
-import 'package:news_app/screens/settings.dart';
 
 class HomeScreen extends StatelessWidget {
   static String routeName = '/home';
