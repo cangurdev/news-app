@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/services/auth_service.dart';
 import 'package:news_app/widget/input_field.dart';
@@ -17,8 +18,18 @@ class Register extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 64.0),
+                child: Image.asset(
+                  'assets/images/icon.png',
+                  width: 100,
+                ),
+              ),
               InputField(
-                prefixIcon: Icon(Icons.mail_outline),
+                prefixIcon: Icon(
+                  Icons.mail_outline,
+                  color: Colors.white,
+                ),
                 labelText: "E-mail",
                 textInputType: TextInputType.emailAddress,
                 textEditingController: emailController,
@@ -27,13 +38,17 @@ class Register extends StatelessWidget {
                 height: 20,
               ),
               InputField(
-                prefixIcon: Icon(Icons.lock_outline),
+                prefixIcon: Icon(
+                  Icons.lock_outline,
+                  color: Colors.white,
+                ),
                 labelText: "Password",
                 obscure: true,
                 textEditingController: passwordController,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 50),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -52,13 +67,26 @@ class Register extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12.0)),
                       onPressed: () async {
                         try {
-                          await context.read<AuthService>().signUp(
-                                email: emailController.text.trim(),
-                                password: passwordController.text.trim(),
-                              );
+                          UserCredential userCredential = await FirebaseAuth
+                              .instance
+                              .createUserWithEmailAndPassword(
+                                  email: emailController.text.trim(),
+                                  password: passwordController.text.trim());
                           Navigator.of(context).pushReplacementNamed('/home');
+                        } on FirebaseAuthException catch (e) {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                Future.delayed(Duration(seconds: 2), () {
+                                  Navigator.of(context).pop(true);
+                                });
+                                return AlertDialog(
+                                  title:
+                                      Text('email veya parola boş bırakılamaz'),
+                                );
+                              });
                         } catch (e) {
-                          print(e.message);
+                          print(e);
                         }
                       },
                       child: Text("Register"),

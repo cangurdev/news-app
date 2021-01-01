@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/services/auth_service.dart';
 import 'package:news_app/widget/input_field.dart';
@@ -25,7 +26,10 @@ class Login extends StatelessWidget {
                 ),
               ),
               InputField(
-                prefixIcon: Icon(Icons.mail_outline),
+                prefixIcon: Icon(
+                  Icons.mail_outline,
+                  color: Colors.white,
+                ),
                 labelText: "E-mail",
                 textInputType: TextInputType.emailAddress,
                 textEditingController: emailController,
@@ -34,7 +38,10 @@ class Login extends StatelessWidget {
                 height: 20,
               ),
               InputField(
-                prefixIcon: Icon(Icons.lock_outline),
+                prefixIcon: Icon(
+                  Icons.lock_outline,
+                  color: Colors.white,
+                ),
                 labelText: "Parola",
                 obscure: true,
                 textEditingController: passwordController,
@@ -61,13 +68,18 @@ class Login extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12.0)),
                       onPressed: () async {
                         try {
-                          await context.read<AuthService>().login(
-                                email: emailController.text.trim(),
-                                password: passwordController.text.trim(),
-                              );
+                          UserCredential userCredential = await FirebaseAuth
+                              .instance
+                              .signInWithEmailAndPassword(
+                                  email: emailController.text.trim(),
+                                  password: passwordController.text.trim());
                           Navigator.of(context).pushReplacementNamed('/home');
-                        } catch (e) {
-                          print(e.message);
+                        } on FirebaseAuthException catch (e) {
+                          if (e.code == 'user-not-found') {
+                            print('No user found for that email.');
+                          } else if (e.code == 'wrong-password') {
+                            print('Wrong password provided for that user.');
+                          }
                         }
                       },
                       child: Text("Giriş Yap"),
