@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
             create: (context) => context.read<AuthService>().authStateChanges),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'News App',
         debugShowCheckedModeBanner: false,
         theme: theme(),
         darkTheme: darkTheme(),

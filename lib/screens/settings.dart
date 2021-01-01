@@ -1,28 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/services/auth_service.dart';
+import 'package:news_app/widget/custom_button.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class Settings extends StatelessWidget {
   final String linkedinUrl = "https://www.linkedin.com/in/cangur/";
   final String githubUrl = "https://github.com/cvngur";
   final String twitterUrl = "https://twitter.com/CodeEmAll";
 
-  Future<void> openWebView(String url) async {
-    if (await canLaunch(url)) {
-      await launch(
-        url,
-        forceSafariVC: false,
-        forceWebView: true,
-        enableJavaScript: true,
-      );
-      return;
-    } else {
-      print("Başaramadık");
-    }
+  static String routeName = '/settings';
+
+  void showLicensePage({
+    @required BuildContext context,
+    String applicationName,
+    String applicationVersion,
+    Widget applicationIcon,
+    String applicationLegalese,
+    bool useRootNavigator = false,
+  }) {
+    assert(context != null);
+    assert(useRootNavigator != null);
+    Navigator.of(context, rootNavigator: useRootNavigator)
+        .push(MaterialPageRoute<void>(
+      builder: (BuildContext context) => LicensePage(
+        applicationName: applicationName,
+        applicationVersion: applicationVersion,
+        applicationIcon: applicationIcon,
+        applicationLegalese: applicationLegalese,
+      ),
+    ));
   }
 
-  static String routeName = '/settings';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,44 +66,29 @@ class Settings extends StatelessWidget {
           children: [
             Text("Geliştirici Hakkında"),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(top: 8.0),
               child: Text("Can Gür"),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                RaisedButton(
-                  child: Text('Linkedin'),
+                CustomButton(
+                  url: linkedinUrl,
                   color: Colors.blue,
-                  textColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.0)),
-                  onPressed: () {
-                    openWebView(linkedinUrl);
-                  },
+                  text: 'Linkedin',
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: RaisedButton(
-                    child: Text('Github'),
+                  child: CustomButton(
+                    url: githubUrl,
                     color: Colors.grey,
-                    textColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0)),
-                    onPressed: () {
-                      openWebView(githubUrl);
-                    },
+                    text: 'Github',
                   ),
                 ),
-                RaisedButton(
-                  child: Text('Twitter'),
+                CustomButton(
+                  url: twitterUrl,
                   color: Colors.blue[200],
-                  textColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.0)),
-                  onPressed: () {
-                    openWebView(twitterUrl);
-                  },
+                  text: 'Twitter',
                 ),
               ],
             ),
@@ -105,7 +98,21 @@ class Settings extends StatelessWidget {
             ),
             Text("1.0.0"),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(top: 12.0),
+              child: Text("Lisanslar"),
+            ),
+            RaisedButton(
+              color: Colors.teal,
+              textColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0)),
+              onPressed: () {
+                showLicensePage(context: context);
+              },
+              child: Text("Görüntüle"),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 32.0),
               child: RaisedButton(
                 color: Colors.red,
                 textColor: Colors.white,
