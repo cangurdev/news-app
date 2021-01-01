@@ -8,6 +8,7 @@ class Settings extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.teal,
           title: Row(
             children: [
               Image.asset(
@@ -20,6 +21,17 @@ class Settings extends StatelessWidget {
               )
             ],
           ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: IconButton(
+                onPressed: () {
+                  Navigator.of(context).pushReplacementNamed('/home');
+                },
+                icon: Icon(Icons.home),
+              ),
+            )
+          ],
         ),
         body: Center(
             child: Column(

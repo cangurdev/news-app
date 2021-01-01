@@ -17,6 +17,13 @@ class Login extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 64.0),
+                child: Image.asset(
+                  'assets/images/icon.png',
+                  width: 100,
+                ),
+              ),
               InputField(
                 prefixIcon: Icon(Icons.mail_outline),
                 labelText: "E-mail",
@@ -33,7 +40,8 @@ class Login extends StatelessWidget {
                 textEditingController: passwordController,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 50),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

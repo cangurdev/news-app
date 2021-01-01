@@ -56,7 +56,7 @@ class _HomeBodyState extends State<HomeBody> {
 
   Future<void> openWebView(String url) async {
     if (await canLaunch(url)) {
-      launch(
+      await launch(
         url,
         forceSafariVC: false,
         forceWebView: true,

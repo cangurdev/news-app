@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
         theme: theme(),
+        darkTheme: darkTheme(),
         initialRoute: Splash.routeName,
         routes: routes,
       ),

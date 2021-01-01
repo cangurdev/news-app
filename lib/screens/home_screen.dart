@@ -8,6 +8,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.teal,
         title: Row(
           children: [
             Image.asset(
@@ -23,8 +24,7 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Settings()));
+              Navigator.of(context).pushReplacementNamed('/settings');
             },
             icon: Icon(Icons.settings),
           )

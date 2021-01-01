@@ -28,16 +28,18 @@ class InputField extends StatelessWidget {
           controller: textEditingController,
           validator: validator,
           keyboardType: textInputType,
+          style: TextStyle(
+            color: Colors.white,
+          ),
           decoration: InputDecoration(
               prefixIcon: prefixIcon,
               labelText: labelText,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(20),
-                borderSide: BorderSide(color: Colors.red),
               ),
               focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
-                  borderSide: BorderSide(color: Colors.blue))),
+                  borderSide: BorderSide(color: Colors.teal[50]))),
         ));
   }
 }
