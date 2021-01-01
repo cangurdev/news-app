@@ -110,7 +110,7 @@ class _HomeBodyState extends State<HomeBody> {
                     child: CachedNetworkImage(
                       imageUrl: item.enclosure.url,
                       width: 70,
-                      height: 50,
+                      height: 60,
                       alignment: Alignment.center,
                       fit: BoxFit.fill,
                     ),

@@ -11,12 +11,12 @@ class HomeScreen extends StatelessWidget {
         title: Row(
           children: [
             Image.asset(
-              'assets/images/logo.png',
+              'assets/images/icon.png',
               width: 50,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
-              child: Text('News App'),
+              child: Text('Haberler'),
             )
           ],
         ),
@@ -30,7 +30,6 @@ class HomeScreen extends StatelessWidget {
           )
         ],
       ),
-      backgroundColor: Colors.amber,
       body: HomeBody(),
     );
   }

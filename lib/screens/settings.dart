@@ -11,12 +11,12 @@ class Settings extends StatelessWidget {
           title: Row(
             children: [
               Image.asset(
-                'assets/images/logo.png',
+                'assets/images/icon.png',
                 width: 50,
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
-                child: Text('News App'),
+                child: Text('Haberler'),
               )
             ],
           ),
@@ -30,7 +30,7 @@ class Settings extends StatelessWidget {
             Text("Versiyon"),
             Text("1.0.0"),
             RaisedButton(
-              color: Colors.blue,
+              color: Colors.red,
               textColor: Colors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.0)),
