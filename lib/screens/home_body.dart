@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:webfeed/util/xml.dart';
 import 'package:webfeed/webfeed.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
@@ -12,7 +13,7 @@ class HomeBody extends StatefulWidget {
 }
 
 class _HomeBodyState extends State<HomeBody> {
-  static const String url = 'https://www.hurriyet.com.tr/rss/anasayfa';
+  static const String url = 'https://www.aa.com.tr/tr/rss/default?cat=guncel';
 
   RssFeed _feed;
   String _title;
@@ -47,18 +48,22 @@ class _HomeBodyState extends State<HomeBody> {
       final client = http.Client();
       final res = await client.get(url);
       return RssFeed.parse(res.body);
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
     return null;
   }
 
   Future<void> openWebView(String url) async {
     if (await canLaunch(url)) {
-      await launch(
+      launch(
         url,
         forceSafariVC: false,
         forceWebView: true,
       );
       return;
+    } else {
+      print("Başaramadık");
     }
     updateTitle("Başaramadık");
   }
@@ -108,7 +113,7 @@ class _HomeBodyState extends State<HomeBody> {
                   leading: Padding(
                     padding: EdgeInsets.only(left: 15),
                     child: CachedNetworkImage(
-                      imageUrl: item.enclosure.url,
+                      imageUrl: item.imageUrl,
                       width: 70,
                       height: 60,
                       alignment: Alignment.center,
