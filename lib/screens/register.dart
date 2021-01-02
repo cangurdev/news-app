@@ -66,30 +66,13 @@ class Register extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12.0)),
                       onPressed: () async {
-                        try {
-                          UserCredential userCredential = await FirebaseAuth
-                              .instance
-                              .createUserWithEmailAndPassword(
-                                  email: emailController.text.trim(),
-                                  password: passwordController.text.trim());
-                          Navigator.of(context).pushReplacementNamed('/home');
-                        } on FirebaseAuthException catch (e) {
-                          showDialog(
+                        await context.read<AuthService>().signUp(
+                              email: emailController.text.trim(),
+                              password: passwordController.text.trim(),
                               context: context,
-                              builder: (context) {
-                                Future.delayed(Duration(seconds: 2), () {
-                                  Navigator.of(context).pop(true);
-                                });
-                                return AlertDialog(
-                                  title:
-                                      Text('email veya parola boş bırakılamaz'),
-                                );
-                              });
-                        } catch (e) {
-                          print(e);
-                        }
+                            );
                       },
-                      child: Text("Register"),
+                      child: Text("Giriş Yap"),
                     )
                   ],
                 ),

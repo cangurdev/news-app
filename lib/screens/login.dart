@@ -67,20 +67,11 @@ class Login extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12.0)),
                       onPressed: () async {
-                        try {
-                          UserCredential userCredential = await FirebaseAuth
-                              .instance
-                              .signInWithEmailAndPassword(
-                                  email: emailController.text.trim(),
-                                  password: passwordController.text.trim());
-                          Navigator.of(context).pushReplacementNamed('/home');
-                        } on FirebaseAuthException catch (e) {
-                          if (e.code == 'user-not-found') {
-                            print('No user found for that email.');
-                          } else if (e.code == 'wrong-password') {
-                            print('Wrong password provided for that user.');
-                          }
-                        }
+                        await context.read<AuthService>().login(
+                              email: emailController.text.trim(),
+                              password: passwordController.text.trim(),
+                              context: context,
+                            );
                       },
                       child: Text("Giriş Yap"),
                     )

@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class AuthService {
   final FirebaseAuth _firebaseAuth;
@@ -11,23 +12,40 @@ class AuthService {
     await _firebaseAuth.signOut();
   }
 
-  Future<String> login({String email, String password}) async {
+  Future<void> login(
+      {String email, String password, BuildContext context}) async {
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: password);
-      return 'Signed in';
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      Navigator.of(context).pushReplacementNamed('/home');
     } on FirebaseAuthException catch (e) {
-      return e.message;
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
     }
   }
 
-  Future<String> signUp({String email, String password}) async {
+  Future<void> signUp(
+      {String email, String password, BuildContext context}) async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      return 'Signed up';
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+      Navigator.of(context).pushReplacementNamed('/home');
+    } on FirebaseAuthException catch (e) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            Future.delayed(Duration(seconds: 2), () {
+              Navigator.of(context).pop(true);
+            });
+            return AlertDialog(
+              title: Text('email veya parola boş bırakılamaz'),
+            );
+          });
     } catch (e) {
-      return e.message;
+      print(e);
     }
   }
 }
