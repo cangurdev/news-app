@@ -98,15 +98,36 @@ class _HomeBodyState extends State<HomeBody> {
                 return Dismissible(
                   key: UniqueKey(),
                   onDismissed: (direction) {
-                    setState(() {
-                      Share.share('${item.title}\n${item.link}');
-                    });
+                    if (direction == DismissDirection.startToEnd) {
+                      setState(() {
+                        Share.share('${item.title}\n${item.link}');
+                      });
+                    } else {
+                      setState(() {
+                        openWebView(item.link);
+                      });
+                    }
                   },
                   background: Container(
                     color: Colors.teal[100],
-                    child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Icon(Icons.share)),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 12.0),
+                            child: Icon(
+                              Icons.share,
+                              color: Colors.teal[800],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 12.0),
+                            child: Icon(
+                              Icons.read_more,
+                              color: Colors.teal[800],
+                            ),
+                          ),
+                        ]),
                   ),
                   child: ListTile(
                     trailing: Icon(Icons.keyboard_arrow_right_rounded),
