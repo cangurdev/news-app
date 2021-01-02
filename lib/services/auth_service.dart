@@ -20,9 +20,11 @@ class AuthService {
       Navigator.of(context).pushReplacementNamed('/home');
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        print('No user found for that email.');
+        dialog(context, 'Kullanıcı Bulunamadı!');
       } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
+        dialog(context, 'Hatalı Parola!');
+      } else {
+        dialog(context, 'Hatalı bir giriş yaptınız!');
       }
     }
   }
@@ -34,18 +36,34 @@ class AuthService {
           .createUserWithEmailAndPassword(email: email, password: password);
       Navigator.of(context).pushReplacementNamed('/home');
     } on FirebaseAuthException catch (e) {
-      showDialog(
-          context: context,
-          builder: (context) {
-            Future.delayed(Duration(seconds: 2), () {
-              Navigator.of(context).pop(true);
-            });
-            return AlertDialog(
-              title: Text('email veya parola boş bırakılamaz'),
-            );
-          });
+      if (e.code == 'email-already-in-use') {
+        dialog(context, 'Girdiğiniz emaile ait bir hesap zaten mevcut.');
+      } else {
+        dialog(context, 'email veya parola boş bırakılamaz');
+      }
     } catch (e) {
       print(e);
     }
+  }
+
+  Future dialog(BuildContext context, String message) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          Future.delayed(Duration(seconds: 2), () {
+            Navigator.of(context).pop(true);
+          });
+          return AlertDialog(
+            title: Text(
+              message,
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0)),
+            backgroundColor: Colors.red[300],
+          );
+        });
   }
 }
