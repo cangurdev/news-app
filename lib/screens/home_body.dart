@@ -3,6 +3,7 @@ import 'package:webfeed/webfeed.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:share/share.dart';
 
 class HomeBody extends StatefulWidget {
   HomeBody() : super();
@@ -93,30 +94,45 @@ class _HomeBodyState extends State<HomeBody> {
               itemCount: _feed.items.length,
               itemBuilder: (context, index) {
                 final item = _feed.items[index];
-                return ListTile(
-                  trailing: Icon(Icons.keyboard_arrow_right_rounded),
-                  contentPadding: EdgeInsets.all(5),
-                  onTap: () {
-                    openWebView(item.link);
+
+                return Dismissible(
+                  key: UniqueKey(),
+                  onDismissed: (direction) {
+                    setState(() {
+                      Share.share('${item.title}\n${item.link}');
+                    });
                   },
-                  title: Text(
-                    item.title,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                  background: Container(
+                    color: Colors.teal[100],
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Icon(Icons.share)),
                   ),
-                  subtitle: Text(
-                    item.description,
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  leading: Padding(
-                    padding: EdgeInsets.only(left: 15),
-                    child: CachedNetworkImage(
-                      imageUrl: item.imageUrl,
-                      width: 70,
-                      height: 60,
-                      alignment: Alignment.center,
-                      fit: BoxFit.fill,
+                  child: ListTile(
+                    trailing: Icon(Icons.keyboard_arrow_right_rounded),
+                    contentPadding: EdgeInsets.all(5),
+                    onTap: () {
+                      openWebView(item.link);
+                    },
+                    title: Text(
+                      item.title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    subtitle: Text(
+                      item.description,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    leading: Padding(
+                      padding: EdgeInsets.only(left: 15),
+                      child: CachedNetworkImage(
+                        imageUrl: item.imageUrl,
+                        width: 70,
+                        height: 60,
+                        alignment: Alignment.center,
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   ),
                 );
